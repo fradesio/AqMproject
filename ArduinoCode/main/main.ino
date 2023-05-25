@@ -37,7 +37,7 @@ void loop() {
   }
 
   mqttClient.loop();
-
+  sendData();
   delay(1000);
 }
 
