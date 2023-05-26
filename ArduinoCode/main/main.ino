@@ -6,6 +6,7 @@
 #define WIFI_PASSWORD "244466666"
 #define RX_PIN 2
 #define TX_PIN 3
+#define TMP A0
 
 SoftwareSerial esp(RX_PIN, TX_PIN); // rx, tx
 WiFiEspClient wifiClient;
@@ -38,7 +39,7 @@ void loop() {
 
   mqttClient.loop();
   sendData();
-  delay(1000);
+  delay(10000);
 }
 
 void reconnectMQTT() {
@@ -56,8 +57,9 @@ void reconnectMQTT() {
 }
 
 void sendData() {
-  float temperature = 25.0; // Example temperature value, replace with your actual data
-  
+  float tmp_sensor = analogRead(TMP); // Example temperature value, replace with your actual data
+  float tmp_voltage = (tmp_sensor / 1024.0) * 5.0;
+  float temperature = (tmp_voltage - 0.5) * 100;
   // Convert the temperature to a string
   char temperatureString[6];
   dtostrf(temperature, 4, 2, temperatureString);
